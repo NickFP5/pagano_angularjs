@@ -1,0 +1,74 @@
+
+  
+  <md-content class="md-padding scroll tab-content">
+
+	  	<div layout="row">
+
+	<div flex>
+		Order by: </br>
+		<md-radio-group ng-model="customListCtrl.selectedCriterion" layout="row" flex>
+
+			<md-radio-button ng-repeat="c in customListCtrl.availablecriteria" 
+							ng-value="c.value" aria-label="{{ c.label }}" >
+
+					{{ c.label }}
+
+			</md-radio-button>
+
+		</md-radio-group>
+	</div>
+	
+	<div flex ng-show="customListCtrl.selectedCriterion != 4">
+		<md-input-container flex>
+						<label>Search task:</label>
+						<input type="search" ng-model="customListCtrl.q" placeholder="filter tasks..." aria-label="filter tasks" />
+		</md-input-container>
+	</div>
+
+	<div flex ng-show="customListCtrl.selectedCriterion == 4">
+		<md-input-container flex>
+						<label>Search task by tag:</label>
+						<input type="search" ng-model="customListCtrl.q2" placeholder="filter tasks by tag..." aria-label="filter tasks by tag" />
+		</md-input-container>
+	</div>
+	
+</div>
+
+<span ng-show="customListCtrl.selectedItem.length > 0" >Selected tasks: </span>
+<div ng-repeat="item in customListCtrl.selectedItem" layout="row">
+	{{item.title}}
+</div>
+<!-- Selected sorting criterion: {{customListCtrl.selectedCriterion}} -->
+
+
+
+
+
+                   <md-list>
+                       <md-list-item class="md-2-line" 
+							   ng-repeat="item in customListCtrl.items | filter: customListCtrl.filterFunction 
+																		| filter: customListCtrl.q 
+																		| mySorting:customListCtrl.selectedCriterion:customListCtrl.q2" 
+							   ng-class="customListCtrl.selectedItem.indexOf(item) > -1 ? 'selected':''" ng-click="customListCtrl.toggleSelection(item)">
+
+               
+                         <md-button ng-click="customListCtrl.changePriority(item)" class="md-icon-button" aria-label="Priority">
+                             <md-icon style="color: green" ng-if="item.priority == -1">low_priority</md-icon>
+                             <md-icon ng-if="item.priority == 0">label</md-icon>
+                             <md-icon style="color: red" ng-if="item.priority == 1">priority_high</md-icon>
+                         </md-button>
+                         <div class="md-list-item-text" layout="column">
+                             <h3> <b>Title</b>: {{item.title}}</h3>
+							 <p> <b>Description</b>: {{item.descr}}</p>
+                             <p> <b>Deadline</b>: {{item.deadline | date: "dd-MM-yyyy"}}, 
+                             <b>Estimated work</b>:{{item.estimatedwork}} hours</p>
+							 <p> <b>Tags</b>: <span ng-repeat="tag in item.tags"> {{tag}} </span> </p>
+                             <p> <b>Done?</b>: {{item.done}}</p>
+                         </div>
+                         <md-checkbox ng-model="item.done" ng-change="customListCtrl.checkStateChanged(item)" class="md-primary md-align-top-right">
+                         </md-checkbox>
+                         <md-divider></md-divider>
+                       </md-list-item>
+                   </md-list>
+ </md-content>
+ </br></br></br>

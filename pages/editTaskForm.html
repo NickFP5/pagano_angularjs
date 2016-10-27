@@ -1,0 +1,91 @@
+<form novalidate class="simple-form" name="editTaskForm" ng-submit="uc.update(uc.task)">
+
+      <md-input-container class="md-block">
+                 <label>Title:</label>
+                 <input type="text" ng-model="uc.task.title" name="tTitle" required=""/><br />
+                 <br />
+                  <div ng-show="addTaskForm.$submitted || addTaskForm.tTitle.$touched">
+                        <div ng-show="addTaskForm.tTitle.$error.required">Title is a required field.</div>
+                  </div>
+      </md-input-container>
+
+      <md-input-container class="md-block">
+                  <label>Description:</label>
+                  <input type="text" ng-model="uc.task.descr" name="tDescr" /><br />
+      </md-input-container>
+
+      <md-input-container class="md-block">
+            <md-select ng-model="uc.task.priority" placeholder="Select a priority" name="tPrio" required="">
+                  <md-option ng-value="priority.value" ng-repeat="priority in uc.priorities">
+                        {{ priority.title }}
+                  </md-option>
+            </md-select>
+            <br />
+            <div ng-show="addTaskForm.$submitted || addTaskForm.tPrio.$touched">
+                  <div ng-show="addTaskForm.tPrio.$error.required">Priority is a required field.</div>
+            </div>
+      </md-input-container>
+      <br />
+
+	<md-input-container class="md-block">
+                  <label>Deadline:</label>
+				  <md-datepicker ng-init="uc.task.deadline = uc.StrToDate(uc.task.deadline)" ng-model="uc.task.deadline" md-placeholder="Enter task deadline" 
+                                          ng-change="uc.task.deadline = uc.StrToDate(uc.task.deadline)"
+                                          name="tDeadline" required=""></md-datepicker>
+                          <br />
+                        <div ng-show="addTaskForm.$submitted || addTaskForm.tDeadline.$touched">
+                              <div ng-show="addTaskForm.tDeadline.$error.required">Deadline is a required field.</div>
+                        </div>
+      </md-input-container>
+      <br />
+
+
+      <md-list>
+            <h3>Tags </h3>
+            <md-list-item ng-repeat="t in uc.availabletags">
+                  <md-checkbox 
+                        ng-value="t"
+                        aria-label="{{ t }}"
+                        ng-checked="uc.task.tags.indexOf(t) > -1" 
+                        ng-click="uc.toggle(t, uc.task.tags)"> 
+                  </md-checkbox>
+                  {{t}}
+            </md-list-item>
+      </md-list>
+	  
+
+      <md-input-container class="md-block">
+                  <label>Estimated work (hours):</label>
+                  <input type="number" ng-model="uc.task.estimatedwork" name="tEstWork" required=""/><br />
+                  <br />
+                  <div ng-show="addTaskForm.$submitted || addTaskForm.tEstWork.$touched">
+                        <div ng-show="addTaskForm.tEstWork.$error.required">Estimated work hours is a required field.</div>
+                  </div>
+      </md-input-container>
+      <br />
+
+      <md-input-container class="md-block">
+		  <md-checkbox ng-model="uc.task.done" aria-label="Done?">
+				Done ?
+		  </md-checkbox>
+	  </md-input-container>
+      <br />
+
+	   
+	   <md-dialog-actions layout="row">
+			 <md-button ng-click="uc.cancel()">
+			  Cancel
+			  </md-button>
+			
+			  <md-button type="submit"> 
+			   Edit
+			  </md-button>
+	   </md-dialog-actions>
+
+</form>
+
+<!-- task: {{uc.task}}
+{{task}}
+{{idx}} {{title}} -->
+
+

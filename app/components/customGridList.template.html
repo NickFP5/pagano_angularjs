@@ -1,0 +1,68 @@
+<md-content class="md-padding scroll tab-content" layout-padding>
+
+<div layout="row">
+
+	<div flex>
+		Order by: </br>
+		<md-radio-group ng-model="customGridListCtrl.selectedCriterion" layout="row" flex>
+
+			<md-radio-button ng-repeat="c in customGridListCtrl.availablecriteria" 
+							ng-value="c.value" aria-label="{{ c.label }}" >
+
+					{{ c.label }}
+
+			</md-radio-button>
+
+		</md-radio-group>
+	</div>
+	
+	<div flex ng-show="customGridListCtrl.selectedCriterion != 4">
+		<md-input-container flex>
+						<label>Search task:</label>
+						<input type="search" ng-model="customGridListCtrl.q" placeholder="filter tasks..." aria-label="filter tasks" />
+		</md-input-container>
+	</div>
+
+	<div flex ng-show="customGridListCtrl.selectedCriterion == 4">
+		<md-input-container flex>
+						<label>Search task by tag:</label>
+						<input type="search" ng-model="customGridListCtrl.q2" placeholder="filter tasks by tag..." aria-label="filter tasks by tag" />
+		</md-input-container>
+	</div>
+	
+</div>
+
+<span ng-show="customGridListCtrl.selectedItem.length > 0" >Selected tasks: </span>
+<div ng-repeat="item in customGridListCtrl.selectedItem" layout="row">
+	{{item.title}}
+</div>
+<!-- Selected sorting criterion: {{customListCtrl.selectedCriterion}} -->
+
+
+
+
+<md-grid-list
+        md-cols-gt-md="12" md-cols="3" md-cols-md="8"
+        md-row-height-gt-md="1:1" md-row-height="4:3"
+        md-gutter-gt-md="16px" md-gutter-md="8px" md-gutter="4px">
+
+    <md-grid-tile ng-repeat="item in customGridListCtrl.items | filter: customGridListCtrl.q 
+																		| mySorting:customGridListCtrl.selectedCriterion:customGridListCtrl.q2"
+                  md-colspan-gt-sm="{{item.estimatedwork/10 + 1}}"
+                  md-rowspan-gt-sm="{{item.priority + 2}}"
+                  ng-style="{
+            				'background': customGridListCtrl.chooseColor($index)
+          					}"
+				          ng-click="customGridListCtrl.toggleSelection(item)">
+      <md-icon class="material-icons md-48" ng-if="item.done == false">assignment</md-icon>
+	  <md-icon class="material-icons md-48" ng-if="item.done == true">done</md-icon>
+	  <md-grid-tile-header><h3><b>{{item.title}}</b></h3></md-grid-tile-header>
+      <md-grid-tile-footer ng-if="item.done == false"><h3><b>Deadline</b>: <span ng-if="item.estimatedwork < 10"></br></span>{{item.deadline | date: "dd-MM-yyyy"}} 
+                             <span ng-if="item.estimatedwork > 10"></br><b>Estimated work</b>:{{item.estimatedwork}} hours</span></h3></md-grid-tile-footer>
+    </md-grid-tile>
+  </md-grid-list>
+</md-content>
+
+  
+ </br></br></br>
+
